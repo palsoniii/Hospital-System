@@ -1,0 +1,49 @@
+function showConfirmationDetails() {
+    const department = document.getElementById("department").value;
+    const doctor = document.getElementById("doctor").value;
+    const date = document.getElementById("appointment-date").value;
+    const time = document.getElementById("time").value;
+    
+    if (!department || !doctor || !date || !time) {
+        alert("Please fill in all fields.");
+        return;
+    }
+
+    // Show confirmation details
+    document.getElementById("confirm-department").textContent = department;
+    document.getElementById("confirm-doctor").textContent = doctor;
+    document.getElementById("confirm-date").textContent = date;
+    document.getElementById("confirm-time").textContent = time;
+
+    // Show confirmation container
+    document.getElementById("confirmationContainer").style.display = "block";
+
+    // Store the selected data for later use
+    window.appointmentData = {
+        department,
+        doctor,
+        date,
+        time
+    };
+}
+
+function confirmAppointment() {
+    const { department, doctor, date, time } = window.appointmentData;
+
+    fetch('http://localhost:3000/appointments', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ department, doctor, appointment_date: date, appointment_time: time })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert("Your appointment has been confirmed!");
+        document.getElementById("confirmationContainer").style.display = "none"; // Hide confirmation
+    })
+    .catch(error => {
+        alert("There was an error confirming your appointment.");
+        console.error(error);
+    });
+}

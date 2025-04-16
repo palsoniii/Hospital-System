@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctors</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-rounded/css/uicons-solid-rounded.css">
+</head>
+<body>
+    <header>
+        <div class="appointment__container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="logo.jpg">
+                </a>
+            </div>
+            <div class="sidemenu__container">
+                <div class="side__menu__choice">
+                    <a href="dashboard.html">
+                        <div class="row">
+                            <img src="dashboard.png" alt="Dashboard Icon">
+                            <p>Dashboard</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="side__menu__choice">
+                    <a href="appointments.html">
+                        <div class="row">
+                            <img src="appointment.png" alt="Appointments Icon">
+                            <p>Appointment</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="side__menu__choice">
+                    <a href="doctor.html">
+                        <div class="row">
+                            <img src="medical-team.png" alt="Doctors Icon">
+                            <p>Doctors</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="side__menu__choice">
+                    <a href="pharmacy.html">
+                        <div class="row">
+                            <img src="corporate.png" alt="Departments Icon">
+                            <p>Pharmacy</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="side__menu__choice">
+                    <a href="mycart.html">
+                        <div class="row">
+                            <img src="trolley.png" alt="Departments Icon">
+                            <p>My Cart</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="side__menu__choice">
+                    <a href="myprofile.html">
+                        <div class="row">
+                            <img src="agenda.png" alt="Contact Us Icon">
+                            <p>My Profile</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="main__content">
+                <h1>Doctors</h1>
+                    <div class="scrollable__container">
+                        <ul class="nav__links">
+                            <li class="link" onclick="filterDoctors('all')">
+                                <div class="scrollable__menu__bttn">All</div>
+                            </li>
+                            <li class="link" onclick="filterDoctors('Pediatrics')">
+                                <div class="scrollable__menu__bttn">Pediatrics</div>
+                            </li>
+                            <li class="link" onclick="filterDoctors('Cardiology')">
+                                <div class="scrollable__menu__bttn">Cardiology</div>
+                            </li>
+                            <li class="link" onclick="filterDoctors('Neurology')">
+                                <div class="scrollable__menu__bttn">Neurology</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Doctors list container where doctor profiles will be inserted dynamically -->
+                    <div class="doctors__list" id="doctorsContainer"></div>                            
+            </div>
+        </div>
+    </header>
+
+    <script>
+        // Define doctor profiles in an array
+        const doctorsData = [
+            {
+                name: 'Dr. Alex Karev',
+                department: 'Pediatrics',
+                image: 'userimage.png',
+                scheduleLink: 'appointments.html',
+                moreInfoLink: '#'
+            },
+            {
+                name: 'Dr. Meredith Grey',
+                department: 'Cardiology',
+                image: 'Dr-Sayali-Kadam.jpg',
+                scheduleLink: 'appointments.html',
+                moreInfoLink: '#'
+            },
+            {
+                name: 'Dr. Derek Shepherd',
+                department: 'Neurology',
+                image: 'logo.jpg',
+                scheduleLink: 'appointments.html',
+                moreInfoLink: '#'
+            },
+            {
+                name: 'Dr. Amelia Shepherd',
+                department: 'Neurology',
+                image: 'logo.jpg',
+                scheduleLink: 'appointments.html',
+                moreInfoLink: '#'
+            },
+            {
+                name: 'Dr. Soham Mehta',
+                department: 'Cardiology',
+                image: 'logo.jpg',
+                scheduleLink: 'appointments.html',
+                moreInfoLink: '#'
+            },
+            {
+                name: 'Dr. Kylie Jonnas',
+                department: 'Neurology',
+                image: 'logo.jpg',
+                scheduleLink: 'appointments.html',
+                moreInfoLink: '#'
+            }
+        ];
+
+        // Function to render doctor profiles dynamically
+        function renderDoctors(department) {
+            const doctorsContainer = document.getElementById('doctorsContainer');
+            doctorsContainer.innerHTML = '';  // Clear the existing content
+
+            // Loop through the doctors data and add matching doctors to the container
+            doctorsData.forEach(doctor => {
+                if (department === 'all' || doctor.department === department) {
+                    const doctorElement = document.createElement('div');
+                    doctorElement.classList.add('doctors__details__container');
+                    doctorElement.setAttribute('data-department', doctor.department);
+
+                    // Set inner HTML for the doctor's profile
+                    doctorElement.innerHTML = `
+                        <img src="${doctor.image}" alt="Doctor Image">
+                        <div class="column">
+                            <h4>${doctor.name}</h4>
+                            <p>${doctor.department}</p>
+                            <a href="${doctor.scheduleLink}">Schedule Appointment</a>
+                            <a href="${doctor.moreInfoLink}">More Info</a>
+                        </div>
+                    `;
+
+                    // Append the doctor profile to the container
+                    doctorsContainer.appendChild(doctorElement);
+                }
+            });
+        }
+
+        // Initial render - show all doctors
+        renderDoctors('all');
+
+        // Filter doctors based on the department
+        function filterDoctors(department) {
+            renderDoctors(department);  // Re-render doctors with the selected filter
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Activities Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+</head>
+<body>
+    <header>
+        <div class="appointment__container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="logo.jpg">
+                </a>
+            </div>
+            <div class="sidemenu__container">
+                <div class="side__menu__choice">
+                    <a href="dashboard.html">
+                        <div class="row">
+                            <img src="dashboard.png" alt="Dashboard Icon">
+                            <p>Dashboard</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="side__menu__choice">
+                    <a href="appointments.html">
+                        <div class="row">
+                            <img src="appointment.png" alt="Appointments Icon">
+                            <p>Appointment</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="side__menu__choice">
+                    <a href="doctor.html">
+                        <div class="row">
+                            <img src="medical-team.png" alt="Doctors Icon">
+                            <p>Doctors</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="side__menu__choice">
+                    <a href="pharmacy.html">
+                        <div class="row">
+                            <img src="corporate.png" alt="Departments Icon">
+                            <p>Pharmacy</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="side__menu__choice">
+                    <a href="mycart.html">
+                        <div class="row">
+                            <img src="trolley.png" alt="Departments Icon">
+                            <p>My Cart</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="side__menu__choice">
+                    <a href="myprofile.html">
+                        <div class="row">
+                            <img src="agenda.png" alt="Contact Us Icon">
+                            <p>My Profile</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="main__content">
+                <section class="patient-activities">
+                    <h1>Dashboard</h1>
+                    
+                    <div class="table__container">
+                        <h2>Upcoming Appointments</h2>
+                        <table id="appointmentTable">
+                            <thead>
+                                <tr>
+                                    <th>Department</th>
+                                    <th>Doctor</th>
+                                    <th>Appointment Date</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody id="upcomingAppointmentTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table__container">
+                        <h2>Your Appointment History</h2>
+                        <table id="appointmentHistoryTable">
+                            <thead>
+                                <tr>
+                                    <th>Department</th>
+                                    <th>Doctor</th>
+                                    <th>Appointment Date</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody id="appointmentHistoryTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="table__container">
+                        <h2>Your Pharmacy History</h2>
+                        <table id="pharmacyTable">
+                            <thead>
+                                <tr>
+                                    <th>Medicine Name</th>
+                                    <th>Quantity</th>
+                                    <th>Price Per Unit</th>
+                                    <th>Total Price</th>
+                                    <th>Purchase Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pharmacyTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+    </header>
+    <script>
+        const appointmentsData = [
+            { department: "Cardiology", doctor: "Dr. Smith", date: "2024-11-12", time: "10:30 AM" },
+            { department: "Dermatology", doctor: "Dr. Johnson", date: "2024-11-15", time: "2:00 PM" },
+            { department: "Neurology", doctor: "Dr. Williams", date: "2024-11-18", time: "11:00 AM" },
+            { department: "Orthopedics", doctor: "Dr. Brown", date: "2024-11-20", time: "9:00 AM" }
+        ];
+    
+        const pharmacyData = [
+            { medicine: "Amoxicillin", appointmentId: "APPT12345", date: "2024-11-12", price: "$15.00" },
+            { medicine: "Ibuprofen", appointmentId: "APPT12346", date: "2024-11-15", price: "$8.50" },
+            { medicine: "Metformin", appointmentId: "APPT12347", date: "2024-11-18", price: "$12.75" },
+            { medicine: "Lisinopril", appointmentId: "APPT12348", date: "2024-11-20", price: "$22.00" },
+            { medicine: "Simvastatin", appointmentId: "APPT12349", date: "2024-11-22", price: "$18.00" }
+        ];
+
+        function parseAppointmentDate(date, time) {
+            const [day, month, year] = date.split('-');
+            const [hours, minutes] = time.split(':');
+            const ampm = time.slice(-2).toUpperCase();  
+    
+            let adjustedHours = parseInt(hours);
+            if (ampm === "PM" && adjustedHours !== 12) adjustedHours += 12;
+            if (ampm === "AM" && adjustedHours === 12) adjustedHours = 0;
+    
+            return new Date(`${month}-${day}-${year} ${adjustedHours}:${minutes}`);
+        }
+    
+        function renderAppointments() {
+            const tableBodyUpcoming = document.getElementById("upcomingAppointmentTableBody");
+            const tableBodyHistory = document.getElementById("appointmentHistoryTableBody");
+            tableBodyUpcoming.innerHTML = "";  
+            tableBodyHistory.innerHTML = "";
+            const currentDate = new Date();
+    
+            appointmentsData.forEach(appointment => {
+                const appointmentDate = parseAppointmentDate(appointment.date, appointment.time);
+    
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${appointment.department}</td>
+                    <td>${appointment.doctor}</td>
+                    <td>${appointment.date}</td>
+                    <td>${appointment.time}</td>
+                `;
+    
+                if (appointmentDate > currentDate) {
+                    tableBodyUpcoming.appendChild(row);  
+                } else {
+                    tableBodyHistory.appendChild(row);  
+                }
+            });
+        }
+    
+        // Update the renderPharmacy function
+
+        function renderPharmacy() {
+            const tableBody = document.getElementById("pharmacyTableBody");
+            tableBody.innerHTML = "";  // Clear existing rows
+        
+            pharmacyData.forEach(purchase => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${purchase.medicine}</td>
+                    <td>${purchase.appointmentId}</td>
+                    <td>${purchase.date}</td>
+                    <td>${purchase.price}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+    
+        // Fetch appointments from Supabase
+        async function fetchAppointments() {
+            try {
+                const response = await fetch('http://localhost:3000/appointments');
+                const appointments = await response.json();
+                
+                const currentDate = new Date();
+                const tableBodyUpcoming = document.getElementById("upcomingAppointmentTableBody");
+                const tableBodyHistory = document.getElementById("appointmentHistoryTableBody");
+                tableBodyUpcoming.innerHTML = "";
+                tableBodyHistory.innerHTML = "";
+
+                appointments.forEach(appointment => {
+                    const appointmentDate = new Date(appointment.appointment_date);
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${appointment.department}</td>
+                        <td>${appointment.doctor}</td>
+                        <td>${appointment.appointment_date}</td>
+                        <td>${appointment.appointment_time}</td>
+                    `;
+
+                    if (appointmentDate > currentDate) {
+                        tableBodyUpcoming.appendChild(row);
+                    } else {
+                        tableBodyHistory.appendChild(row);
+                    }
+                });
+            } catch (error) {
+                console.error('Error fetching appointments:', error);
+            }
+        }
+
+        // Add this function in your <script> tag
+
+        async function fetchPharmacyHistory() {
+            try {
+                const response = await fetch('http://localhost:3000/cart');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                
+                const pharmacyTableBody = document.getElementById('pharmacyTableBody');
+                pharmacyTableBody.innerHTML = ''; // Clear existing rows
+
+                data.forEach(item => {
+                    const date = new Date(item.created_at).toLocaleDateString();
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${item.medicine_name}</td>
+                        <td>${item.quantity}</td>
+                        <td>₹${parseFloat(item.price_per_unit).toFixed(2)}</td>
+                        <td>₹${parseFloat(item.total_price).toFixed(2)}</td>
+                        <td>${date}</td>
+                    `;
+                    pharmacyTableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error fetching pharmacy history:', error);
+                document.getElementById('pharmacyTableBody').innerHTML = 
+                    '<tr><td colspan="5">Error loading pharmacy history</td></tr>';
+            }
+        }
+
+        // Update the window.onload function to include pharmacy history
+        window.onload = function() {
+            fetchAppointments();
+            fetchPharmacyHistory();
+        };
+    </script>
+    
+</body>
+</html>

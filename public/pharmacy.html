@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-rounded/css/uicons-solid-rounded.css"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="appointment__container">
+        <div class="logo">
+          <a href="index.html">
+            <img src="logo.jpg" />
+          </a>
+        </div>
+        <div class="sidemenu__container">
+          <div class="side__menu__choice">
+            <a href="dashboard.html">
+              <div class="row">
+                <img src="dashboard.png" alt="Dashboard Icon" />
+                <p>Dashboard</p>
+              </div>
+            </a>
+          </div>
+          <div class="side__menu__choice">
+            <a href="appointments.html">
+              <div class="row">
+                <img src="appointment.png" alt="Appointments Icon" />
+                <p>Appointment</p>
+              </div>
+            </a>
+          </div>
+          <div class="side__menu__choice">
+            <a href="doctor.html">
+              <div class="row">
+                <img src="medical-team.png" alt="Doctors Icon" />
+                <p>Doctors</p>
+              </div>
+            </a>
+          </div>
+          <div class="side__menu__choice">
+            <a href="pharmacy.html">
+              <div class="row">
+                <img src="corporate.png" alt="Departments Icon" />
+                <p>Pharmacy</p>
+              </div>
+            </a>
+          </div>
+          <div class="side__menu__choice">
+            <a href="mycart.html">
+              <div class="row">
+                <img src="trolley.png" alt="Departments Icon" />
+                <p>My Cart</p>
+              </div>
+            </a>
+          </div>
+          <div class="side__menu__choice">
+            <a href="myprofile.html">
+              <div class="row">
+                <img src="agenda.png" alt="Contact Us Icon" />
+                <p>My Profile</p>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="main__content pharmacy">
+          <div class="mycart__row">
+            <h1>Pharmacy</h1>
+            <button
+              id="confirmOrderBtn"
+              class="bttn form__bttn"
+              onclick="addToCart()"
+            >
+              Add to Cart
+            </button>
+          </div>
+          <input
+            type="search"
+            id="searchInput"
+            placeholder="Search for medicines"
+            oninput="searchMedicines()"
+          />
+          <div class="medicines__list" id="medicinesList"></div>
+          <div class="medicines__list" id="medicinesList">
+            <!-- Medicine cards will be inserted here by JavaScript -->
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <script>
+      // Medicine data
+      const medicinesData = [
+        {
+          id: 1,
+          name: "Paracetamol",
+          pricePerUnit: 5.99,
+          quantity: 0,
+          image: "paracetamol.jpg",
+          description: "For fever and pain relief",
+        },
+        {
+          id: 2,
+          name: "Amoxicillin",
+          pricePerUnit: 12.99,
+          quantity: 0,
+          image: "amoxicillin.jpg",
+          description: "Antibiotic for bacterial infections",
+        },
+        {
+          id: 3,
+          name: "Ibuprofen",
+          pricePerUnit: 7.99,
+          quantity: 0,
+          image: "Ibuprofen-Liquid-Capsules-100-Caps.jpg",
+          description: "Anti-inflammatory pain reliever",
+        },
+        {
+          id: 4,
+          name: "Loratadine",
+          pricePerUnit: 8.99,
+          quantity: 0,
+          image: "loratadine-dispersible-tablets-ip-10-mg.jpg",
+          description: "Antihistamine for allergies",
+        },
+        {
+          id: 5,
+          name: "Aspirin",
+          pricePerUnit: 6.99,
+          quantity: 0,
+          image: "aspirin-dispersible-tablets.jpg",
+          description: "Pain reliever and blood thinner",
+        },
+      ];
+
+      function renderMedicines() {
+        const medicinesList = document.getElementById("medicinesList");
+        medicinesList.innerHTML = "";
+
+        medicinesData.forEach((medicine) => {
+          const card = document.createElement("div");
+          card.className = "medicines__container";
+          card.innerHTML = `
+            <img src="${medicine.image}" alt="${medicine.name}">
+            <h4>${medicine.name}</h4>
+            <p>${medicine.description}</p>
+            <p>Price: $${medicine.pricePerUnit.toFixed(2)}</p>
+            <div class="quantity-control">
+                <input type="number" 
+                    min="0" 
+                    value="${medicine.quantity}" 
+                    onchange="updateQuantity(${medicine.id}, this.value)"
+                    class="quantity-input">
+            </div>
+            <p>Total: $${(medicine.quantity * medicine.pricePerUnit).toFixed(
+              2
+            )}</p>
+        `;
+          medicinesList.appendChild(card);
+        });
+      }
+
+      function updateQuantity(id, newQuantity) {
+        const medicine = medicinesData.find((m) => m.id === id);
+        if (medicine) {
+          medicine.quantity = parseInt(newQuantity) || 0;
+          renderMedicines();
+        }
+      }
+
+      async function addToCart() {
+        const selectedMedicines = medicinesData.filter(
+          (medicine) => medicine.quantity > 0
+        );
+
+        if (selectedMedicines.length === 0) {
+          alert("Please select at least one medicine");
+          return;
+        }
+
+        // Create an array of promises for each item to be added
+        const addPromises = selectedMedicines.map((medicine) => {
+          return fetch("http://localhost:3000/cart", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              medicine_name: medicine.name,
+              quantity: parseInt(medicine.quantity),
+              price_per_unit: parseFloat(medicine.pricePerUnit),
+            }),
+          }).then((response) => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+          });
+        });
+
+        // Wait for all items to be added
+        Promise.all(addPromises)
+          .then(() => {
+            alert("Items added to cart successfully!");
+            // Reset quantities
+            medicinesData.forEach((medicine) => (medicine.quantity = 0));
+            renderMedicines();
+            // Redirect to cart page
+            window.location.href = "mycart.html";
+          })
+          .catch((error) => {
+            console.error("Error adding items to cart:", error);
+            alert("Error adding items to cart. Please try again.");
+          });
+      }
+
+      // Initialize the page
+      window.onload = renderMedicines;
+    </script>
+  </body>
+</html>

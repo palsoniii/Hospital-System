@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cart Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-rounded/css/uicons-solid-rounded.css"
+    />
+    <style>
+      .bttn:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+      }
+
+      #makePaymentBtn {
+        margin-top: 10px;
+        background-color: #4caf50;
+      }
+
+      #makePaymentBtn:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="appointment__container">
+        <div class="logo">
+          <a href="index.html">
+            <img src="logo.jpg" alt="Logo" />
+          </a>
+        </div>
+        <div class="sidemenu__container">
+          <div class="side__menu__choice">
+            <a href="dashboard.html">
+              <div class="row">
+                <img src="dashboard.png" alt="Dashboard Icon" />
+                <p>Dashboard</p>
+              </div>
+            </a>
+          </div>
+          <div class="side__menu__choice">
+            <a href="appointments.html">
+              <div class="row">
+                <img src="appointment.png" alt="Appointments Icon" />
+                <p>Appointment</p>
+              </div>
+            </a>
+          </div>
+          <div class="side__menu__choice">
+            <a href="doctor.html">
+              <div class="row">
+                <img src="medical-team.png" alt="Doctors Icon" />
+                <p>Doctors</p>
+              </div>
+            </a>
+          </div>
+          <div class="side__menu__choice">
+            <a href="pharmacy.html">
+              <div class="row">
+                <img src="corporate.png" alt="Departments Icon" />
+                <p>Pharmacy</p>
+              </div>
+            </a>
+          </div>
+          <div class="side__menu__choice">
+            <a href="mycart.html">
+              <div class="row">
+                <img src="trolley.png" alt="Departments Icon" />
+                <p>My Cart</p>
+              </div>
+            </a>
+          </div>
+          <div class="side__menu__choice">
+            <a href="myprofile.html">
+              <div class="row">
+                <img src="agenda.png" alt="Contact Us Icon" />
+                <p>My Profile</p>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="main__content pharmacy">
+          <h1>My Cart</h1>
+          <div class="cart__container">
+            <div class="table__container">
+              <h2>Your Orders</h2>
+              <table id="cartTable">
+                <thead>
+                  <tr>
+                    <th>Medicine Name</th>
+                    <th>Stock Status</th>
+                    <th>Quantity</th>
+                    <th>Price Per Unit</th>
+                    <th>Total Price</th>
+                    <th>Delete</th>
+                  </tr>
+                </thead>
+                <tbody id="cartTableBody"></tbody>
+              </table>
+            </div>
+            <div class="order__confirmation">
+              <h2>Order Summary</h2>
+              <p>Total Items: <span id="totalItems">0</span></p>
+              <p>Total Price: $<span id="totalPrice">0.00</span></p>
+              <button
+                id="confirmOrderBtn"
+                class="bttn form__bttn"
+                onclick="confirmOrder()"
+              >
+                Confirm Order
+              </button>
+              <button
+                id="makePaymentBtn"
+                class="bttn form__bttn"
+                onclick="proceedToPayment()"
+                style="display: none; background-color: #4caf50"
+              >
+                Proceed to Payment
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <script>
+      function fetchCartItems() {
+        fetch("http://localhost:3000/cart")
+          .then((response) => response.json())
+          .then((data) => {
+            renderCartTable(data);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("Error fetching cart items");
+          });
+      }
+
+      function renderCartTable(cartData) {
+        const tableBody = document.getElementById("cartTableBody");
+        tableBody.innerHTML = "";
+
+        let totalItems = 0;
+        let totalPrice = 0;
+
+        cartData.forEach((item) => {
+          totalItems += item.quantity;
+          totalPrice += item.total_price;
+
+          const row = document.createElement("tr");
+          row.innerHTML = `
+                    <td>${item.medicine_name}</td>
+                    <td>${item.quantity}</td>
+                    <td>$${item.price_per_unit.toFixed(2)}</td>
+                    <td>$${item.total_price.toFixed(2)}</td>
+                    <td>
+                        <button onclick="removeItem(${
+                          item.id
+                        })" class="mycart__bttn">Remove</button>
+                    </td>
+                `;
+          tableBody.appendChild(row);
+        });
+
+        document.getElementById("totalItems").textContent = totalItems;
+        document.getElementById("totalPrice").textContent =
+          totalPrice.toFixed(2);
+      }
+
+      function removeItem(id) {
+        fetch(`http://localhost:3000/cart/${id}`, {
+          method: "DELETE",
+        })
+          .then((response) => response.json())
+          .then(() => {
+            fetchCartItems();
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("Error removing item");
+          });
+      }
+
+      function confirmOrder() {
+        if (document.getElementById("totalItems").textContent === "0") {
+          alert(
+            "Your cart is empty! Please add items before confirming order."
+          );
+          return;
+        }
+
+        const totalAmount = document.getElementById("totalPrice").textContent;
+        const result = confirm(
+          `Confirm order for $${totalAmount}?\nThis will process your order and prepare it for payment.`
+        );
+
+        if (result) {
+          alert("Order confirmed successfully! Please proceed to payment.");
+          document.getElementById("confirmOrderBtn").disabled = true;
+          document.getElementById("makePaymentBtn").style.display = "block";
+        }
+      }
+
+      function proceedToPayment() {
+        const totalAmount = document.getElementById("totalPrice").textContent;
+        const result = confirm(
+          `Proceed to payment for $${totalAmount}?\nYou will be redirected to the payment gateway.`
+        );
+
+        if (result) {
+          alert(
+            "Redirecting to payment gateway...\nThank you for your purchase!"
+          );
+          // Here you could redirect to a payment page or integrate a payment gateway
+          window.location.href = "dashboard.html";
+        }
+      }
+
+      // Load cart items when page loads
+      window.onload = fetchCartItems;
+    </script>
+  </body>
+</html>

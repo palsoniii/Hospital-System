@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Page</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="login__center-container">
+            <div class="login__form-container">
+                <form id="signupForm" onsubmit="return validateForm()">
+                    <h2>Signup</h2>
+                    <input type="text" id="firstName" placeholder="First Name" required>
+                    <input type="text" id="lastName" placeholder="Last Name" required>
+                    <input type="text" id="address" placeholder="Address (City, State, Country)" required>
+                    <input type="email" id="email" placeholder="Email" required>
+                    <input type="date" id="dob" placeholder="DOB" required>
+                    <input type="text" id="gender" placeholder="Gender" required>
+                    <input type="password" id="password" placeholder="Password" required>
+                    <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+                    <button type="submit" class="bttn form__bttn">Sign up</button>
+                </form>
+                <div id="errorMessages" style="color: red; margin-top: 10px;"></div>
+            </div>
+        </div>
+    </header>
+
+    <script>
+        function validateForm() {
+            const errorMessages = [];
+            const firstName = document.getElementById("firstName").value.trim();
+            const lastName = document.getElementById("lastName").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const dob = document.getElementById("dob").value;
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
+    
+            if (firstName.length < 5) {
+                errorMessages.push("First Name must be at least 5 characters long.");
+            }
+            if (lastName.length < 5) {
+                errorMessages.push("Last Name must be at least 5 characters long.");
+            }
+    
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+            const atIndex = email.indexOf("@");
+            const dotIndex = email.lastIndexOf(".");
+            if (!emailPattern.test(email) || dotIndex - atIndex < 4) {
+                errorMessages.push("Invalid email format.");
+            }
+    
+            const today = new Date();
+            const birthDate = new Date(dob);
+            const age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            const dayDiff = today.getDate() - birthDate.getDate();
+            if (
+                age < 18 ||
+                (age === 18 && (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)))
+            ) {
+                errorMessages.push("You must be at least 18 years old.");
+            }
+    
+            const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+            if (!passwordPattern.test(password)) {
+                errorMessages.push(
+                    "Password must be at least 8 characters long, with at least one uppercase letter, one lowercase letter, one number, and one special character."
+                );
+            }
+            if (password !== confirmPassword) {
+                errorMessages.push("Passwords do not match.");
+            }
+    
+            const errorContainer = document.getElementById("errorMessages");
+            errorContainer.innerHTML = errorMessages.join("<br>");
+    
+            if (errorMessages.length === 0) {
+                window.location.href = "loginscreen.html"; 
+                return false; 
+            }
+    
+            return false; 
+        }
+    </script>
+    
+</body>
+</html>

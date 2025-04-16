@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointments</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+</head>
+<body>
+    <header>
+        <div class="appointment__container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="logo.jpg" alt="Logo">
+                </a>
+            </div>
+            <div class="sidemenu__container">
+                <div class="side__menu__choice">
+                    <a href="dashboard.html">
+                        <div class="row">
+                            <img src="dashboard.png" alt="Dashboard Icon">
+                            <p>Dashboard</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="side__menu__choice">
+                    <a href="appointments.html">
+                        <div class="row">
+                            <img src="appointment.png" alt="Appointments Icon">
+                            <p>Appointment</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="side__menu__choice">
+                    <a href="doctor.html">
+                        <div class="row">
+                            <img src="medical-team.png" alt="Doctors Icon">
+                            <p>Doctors</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="side__menu__choice">
+                    <a href="diagnostics.html">
+                        <div class="row">
+                            <img src="corporate.png" alt="Departments Icon">
+                            <p>Diagnostics</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="side__menu__choice">
+                    <a href="#">
+                        <div class="row">
+                            <img src="corporate.png" alt="Departments Icon">
+                            <p>Pharmacy</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="side__menu__choice">
+                    <a href="myprofile.html">
+                        <div class="row">
+                            <img src="agenda.png" alt="Contact Us Icon">
+                            <p>My Profile</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="main__content">
+                <h1>Appointments</h1>
+                <div class="row">
+                    <div class="quickbooking__container">
+                        <div class="form__container">
+                            <div class="column">
+                                <div class="row">
+                                    <h2>Schedule an appointment</h2>
+                                    <img src="calendar.png" alt="Calendar Icon">
+                                </div>
+                                <div class="column">
+                                    <label for="department">Select Department:</label>
+                                    <select id="department" class="dropdown">
+                                        <option value="">-- Select Department --</option>
+                                        <option value="cardiology">Cardiology</option>
+                                        <option value="neurology">Neurology</option>
+                                        <option value="orthopedics">Orthopedics</option>
+                                        <option value="pediatrics">Pediatrics</option>
+                                    </select>
+                                </div>
+                                <div class="column">
+                                    <label for="doctor">Select Doctor:</label>
+                                    <select id="doctor" class="dropdown">
+                                        <option value="">-- Select Doctor --</option>
+                                        <option value="dr_sarah">Dr. Sarah Johnson</option>
+                                        <option value="dr_michael">Dr. Michael Lee</option>
+                                        <option value="dr_emily">Dr. Emily Davis</option>
+                                    </select>
+                                </div>
+                                <div class="column">
+                                    <label for="time">Available Timings:</label>
+                                    <select id="time" class="dropdown">
+                                        <option value="">-- Select Time --</option>
+                                        <option value="10_00am">10:00 AM - 11:00 AM</option>
+                                        <option value="11_00am">11:00 AM - 12:00 PM</option>
+                                        <option value="2_00pm">2:00 PM - 3:00 PM</option>
+                                    </select>
+                                </div>
+                                <div class="column">
+                                    <label for="appointment-date">Select Date:</label>
+                                    <input type="date" id="appointment-date" class="date__picker">
+                                    <button class="bttn form__bttn" onclick="scheduleAppointment()">Schedule Appointment</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="confirmation__container" id="confirmationContainer" style="display: none;">
+                        <div class="column">
+                            <div class="row">
+                                <h2>Appointment Confirmation</h2>
+                                <img src="check-mark.png" alt="Checkmark Icon">
+                            </div>
+                            <div class="confirmation__details">
+                                <p><strong>Department:</strong> <span id="confirm-department">Cardiology</span></p>
+                                <p><strong>Doctor:</strong> <span id="confirm-doctor">Dr. Sarah Johnson</span></p>
+                                <p><strong>Date:</strong> <span id="confirm-date">2024-11-10</span></p>
+                                <p><strong>Time:</strong> <span id="confirm-time">10:00 AM - 11:00 AM</span></p>
+                            </div>
+                            <button class="bttn form__bttn" onclick="confirmAppointment()">Confirm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <script>
+        function scheduleAppointment() {
+            const department = document.getElementById("department").value;
+            const doctor = document.getElementById("doctor").value;
+            const date = document.getElementById("appointment-date").value;
+            const time = document.getElementById("time").value;
+
+            if (!department || !doctor || !date || !time) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            // Display confirmation details
+            document.getElementById("confirm-department").textContent = document.getElementById("department").options[document.getElementById("department").selectedIndex].text;
+            document.getElementById("confirm-doctor").textContent = document.getElementById("doctor").options[document.getElementById("doctor").selectedIndex].text;
+            document.getElementById("confirm-date").textContent = date;
+            document.getElementById("confirm-time").textContent = document.getElementById("time").options[document.getElementById("time").selectedIndex].text;
+
+            document.getElementById("confirmationContainer").style.display = "block";
+
+            // Send appointment details to server (using fetch API)
+            const appointmentData = {
+                department: department,
+                doctor: doctor,
+                appointment_date: date,
+                appointment_time: time
+            };
+
+            fetch('http://localhost:3000/appointments', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(appointmentData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Appointment scheduled:', data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        function confirmAppointment() {
+            alert("Your appointment has been confirmed!");
+        }
+    </script>
+</body>
+</html>

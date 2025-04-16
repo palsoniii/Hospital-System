@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+</head>
+<body>
+    <div class="appointment__container">
+        <div class="logo">
+            <a href="index.html">
+                <img src="logo.jpg">
+            </a>
+        </div>
+        <div class="sidemenu__container">
+            <div class="side__menu__choice">
+                <a href="dashboard.html">
+                    <div class="row">
+                        <img src="dashboard.png" alt="Dashboard Icon">
+                        <p>Dashboard</p>
+                    </div>
+                </a>
+            </div>
+            <div class="side__menu__choice">
+                <a href="appointments.html">
+                    <div class="row">
+                        <img src="appointment.png" alt="Appointments Icon">
+                        <p>Appointment</p>
+                    </div>
+                </a>
+            </div>
+            <div class="side__menu__choice">
+                <a href="doctor.html">
+                    <div class="row">
+                        <img src="medical-team.png" alt="Doctors Icon">
+                        <p>Doctors</p>
+                    </div>
+                </a>
+            </div>
+            <div class="side__menu__choice">
+                <a href="pharmacy.html">
+                    <div class="row">
+                        <img src="corporate.png" alt="Departments Icon">
+                        <p>Pharmacy</p>
+                    </div>
+                </a>
+            </div>
+            <div class="side__menu__choice">
+                <a href="mycart.html">
+                    <div class="row">
+                        <img src="trolley.png" alt="Departments Icon">
+                        <p>My Cart</p>
+                    </div>
+                </a>
+            </div>
+            <div class="side__menu__choice">
+                <a href="myprofile.html">
+                    <div class="row">
+                        <img src="agenda.png" alt="Contact Us Icon">
+                        <p>My Profile</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="main__content">
+            <h1>My Profile</h1>
+            <div class="row">
+                <div class="basic__account__details" id="doctorsContainer">
+                    <img src="userimage.png" alt="Doctor Image">
+                    <h4>Prachi Tewatia</h4>
+                    <p>Mumbai, Maharashtra</p>
+                    <p>hello@gmail.com</p>
+                    <p>+1234567890</p>
+                </div>
+                <div class="account__details" id="accountDetailsContainer">
+                    <div class="row">
+                        <h3>Account Details</h3>
+                        <a onclick="toggleEditMode()" id="editButton">Edit</a>
+                    </div>
+                    <div class="row">
+                        <p>First Name</p>
+                        <h4 id="firstName">Prachi</h4>
+                        <input type="text" class="edit-field" id="editFirstName" value="Falguni" style="display:none;">
+                    </div>
+                    <div class="row">
+                        <p>Last Name</p>
+                        <h4 id="lastName">Tewatia</h4>
+                        <input type="text" class="edit-field" id="editLastName" value="Chugh" style="display:none;">
+                    </div>
+                    <div class="row">
+                        <p>DOB</p>
+                        <h4 id="dob">12-04-1998</h4>
+                        <input type="date" class="edit-field" id="editDob" value="2004-01-01" style="display:none;">
+                    </div>
+                    <div class="row">
+                        <p>Gender</p>
+                        <h4 id="gender">Female</h4>
+                        <input type="text" class="edit-field" id="editGender" value="Female" style="display:none;">
+                    </div>
+                    <div class="row">
+                        <p>Address</p>
+                        <h4 id="address">Juhu</h4>
+                        <input type="text" class="edit-field" id="editAddress" value="Juhu" style="display:none;">
+                    </div>
+                    <div class="row">
+                        <p>City</p>
+                        <h4 id="city">Mumbai</h4>
+                        <input type="text" class="edit-field" id="editCity" value="Mumbai" style="display:none;">
+                    </div>
+                    <div class="row">
+                        <p>State</p>
+                        <h4 id="state">Maharasthra</h4>
+                        <input type="text" class="edit-field" id="editState" value="Maharashtra" style="display:none;">
+                    </div>
+                    <div class="row">
+                        <p>Country</p>
+                        <h4 id="country">India</h4>
+                        <input type="text" class="edit-field" id="editCountry" value="India" style="display:none;">
+                    </div>
+                    <div class="row">
+                        <p>Mobile Number</p>
+                        <h4 id="mobile">+1234567890</h4>
+                        <input type="text" class="edit-field" id="editMobile" value="+1234567890" style="display:none;">
+                    </div>
+                </div>
+
+                <!-- 
+                <div class="account__details">
+                    <h3>History</h3>
+                    <div class="row">
+                        <p>Address</p>
+                        <h4>previous address</h4>
+                    </div>
+                    <div class="row">
+                        <p>City</p>
+                        <h4>New York</h4>
+                    </div>
+                    <div class="row">
+                        <p>State</p>
+                        <h4>New York</h4>
+                    </div>
+                    <div class="row">
+                        <p>Country</p>
+                        <h4>USA</h4>
+                    </div>
+                    <div class="row">
+                        <p>Mobile Number</p>
+                        <h4>+9876543210</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="account__details" id="accountDetailsContainer">
+                <div class="row">
+                    <h3>Account Details</h3>
+                    <a onclick="toggleEditMode()" id="editButton">Edit</a>
+                </div>
+                <div class="row">
+                    <p>First Name</p>
+                    <h4 id="firstName">Felicia</h4>
+                    <input type="text" class="edit-field" id="editFirstName" value="Felicia" style="display:none;">
+                </div>
+                <div class="row">
+                    <p>Last Name</p>
+                    <h4 id="lastName">Burke</h4>
+                    <input type="text" class="edit-field" id="editLastName" value="Burke" style="display:none;">
+                </div>
+                <div class="row">
+                    <p>DOB</p>
+                    <h4 id="dob">12-04-1998</h4>
+                    <input type="date" class="edit-field" id="editDob" value="1998-04-12" style="display:none;">
+                </div>
+                <div class="row">
+                    <p>Gender</p>
+                    <h4 id="gender">Female</h4>
+                    <input type="text" class="edit-field" id="editGender" value="Female" style="display:none;">
+                </div>
+                <div class="row">
+                    <p>Address</p>
+                    <h4 id="address">example address</h4>
+                    <input type="text" class="edit-field" id="editAddress" value="example address" style="display:none;">
+                </div>
+                <div class="row">
+                    <p>City</p>
+                    <h4 id="city">LA</h4>
+                    <input type="text" class="edit-field" id="editCity" value="LA" style="display:none;">
+                </div>
+                <div class="row">
+                    <p>State</p>
+                    <h4 id="state">California</h4>
+                    <input type="text" class="edit-field" id="editState" value="California" style="display:none;">
+                </div>
+                <div class="row">
+                    <p>Country</p>
+                    <h4 id="country">USA</h4>
+                    <input type="text" class="edit-field" id="editCountry" value="USA" style="display:none;">
+                </div>
+                <div class="row">
+                    <p>Mobile Number</p>
+                    <h4 id="mobile">+1234567890</h4>
+                    <input type="text" class="edit-field" id="editMobile" value="+1234567890" style="display:none;">
+                </div>
+            </div> -->
+        </div>
+        
+    </div>
+    <script>
+        let editMode = false;
+
+function toggleEditMode() {
+    const accountDetailsContainer = document.getElementById("accountDetailsContainer");
+    const editButton = document.getElementById("editButton");
+
+    editMode = !editMode;
+
+    if (editMode) {
+        editButton.textContent = "Save";
+        toggleFieldsVisibility(true);
+    } else {
+        editButton.textContent = "Edit";
+        toggleFieldsVisibility(false);
+
+        document.getElementById("firstName").textContent = document.getElementById("editFirstName").value;
+        document.getElementById("lastName").textContent = document.getElementById("editLastName").value;
+        document.getElementById("dob").textContent = document.getElementById("editDob").value;
+        document.getElementById("gender").textContent = document.getElementById("editGender").value;
+        document.getElementById("address").textContent = document.getElementById("editAddress").value;
+        document.getElementById("city").textContent = document.getElementById("editCity").value;
+        document.getElementById("state").textContent = document.getElementById("editState").value;
+        document.getElementById("country").textContent = document.getElementById("editCountry").value;
+        document.getElementById("mobile").textContent = document.getElementById("editMobile").value;
+
+        // Show alert after changes are saved
+        alert("Your changes have been saved successfully!");
+    }
+}
+
+function toggleFieldsVisibility(show) {
+    const fields = document.querySelectorAll('.edit-field');
+    const textFields = document.querySelectorAll('.account__details h4');
+    fields.forEach(field => field.style.display = show ? 'block' : 'none');
+    textFields.forEach(field => field.style.display = show ? 'none' : 'block');
+}
+
+
+        </script>
+</body>
+</html>

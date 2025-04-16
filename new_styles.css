@@ -1,0 +1,21 @@
+html{
+    scrollbar-width: normal;
+    scrollbar-color: rgb(167, 167, 167) rgb(80, 78, 78);
+}
+
+html::-webkit-scrollbar{
+    width: 2vw;
+}
+
+html::-webkit-scrollbar-thumb{
+    background-color: #40c060;
+}
+
+html::-webkit-scrollbar-track{
+    background-color: #f4c3b6;
+}
+
+body{
+    background-color: azure;
+    color: antiquewhite;
+}
