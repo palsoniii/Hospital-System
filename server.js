@@ -7,8 +7,19 @@ require("dotenv").config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// CORS configuration
+const corsOptions = {
+  origin: [
+    'http://localhost:3000',  // For local development
+    'https://hospital-system-phi.vercel.app',  // Replace with your actual Vercel URL
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));

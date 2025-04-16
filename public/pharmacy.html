@@ -93,6 +93,7 @@
       </div>
     </header>
 
+    <script src="config.js"></script>
     <script>
       // Medicine data
       const medicinesData = [
@@ -185,11 +186,12 @@
 
         // Create an array of promises for each item to be added
         const addPromises = selectedMedicines.map((medicine) => {
-          return fetch("http://localhost:3000/cart", {
+          return fetch(`${API_CONFIG.baseUrl}${API_CONFIG.endpoints.cart}`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
+            credentials: 'include', // Important for CORS with credentials
             body: JSON.stringify({
               medicine_name: medicine.name,
               quantity: parseInt(medicine.quantity),
