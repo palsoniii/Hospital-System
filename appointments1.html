@@ -131,7 +131,7 @@
             </div>
         </div>
     </header>
-
+    <script src="config.js"></script>
     <script>
         function scheduleAppointment() {
             const department = document.getElementById("department").value;
@@ -160,11 +160,12 @@
                 appointment_time: time
             };
 
-            fetch('http://localhost:3000/appointments', {
+            fetch(`${API_CONFIG.baseUrl}${API_CONFIG.endpoints.appointments}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include',
                 body: JSON.stringify(appointmentData)
             })
             .then(response => response.json())

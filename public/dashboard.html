@@ -119,6 +119,7 @@
                 </section>
             </div>
     </header>
+    <script src="config.js"></script>
     <script>
         const appointmentsData = [
             { department: "Cardiology", doctor: "Dr. Smith", date: "2024-11-12", time: "10:30 AM" },
@@ -194,7 +195,9 @@
         // Fetch appointments from Supabase
         async function fetchAppointments() {
             try {
-                const response = await fetch('http://localhost:3000/appointments');
+                const response = await fetch(`${API_CONFIG.baseUrl}${API_CONFIG.endpoints.appointments}`, {
+                    credentials: 'include'
+                });
                 const appointments = await response.json();
                 
                 const currentDate = new Date();
@@ -228,7 +231,9 @@
 
         async function fetchPharmacyHistory() {
             try {
-                const response = await fetch('http://localhost:3000/cart');
+                const response = await fetch(`${API_CONFIG.baseUrl}${API_CONFIG.endpoints.cart}`, {
+                    credentials: 'include'
+                });
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }

@@ -126,10 +126,12 @@
         </div>
       </div>
     </header>
-
+    <script src="config.js"></script>
     <script>
       function fetchCartItems() {
-        fetch("http://localhost:3000/cart")
+        fetch(`${API_CONFIG.baseUrl}${API_CONFIG.endpoints.cart}`, {
+          credentials: 'include'
+        })
           .then((response) => response.json())
           .then((data) => {
             renderCartTable(data);
@@ -172,8 +174,9 @@
       }
 
       function removeItem(id) {
-        fetch(`http://localhost:3000/cart/${id}`, {
+        fetch(`${API_CONFIG.baseUrl}${API_CONFIG.endpoints.cart}/${id}`, {
           method: "DELETE",
+          credentials: 'include'
         })
           .then((response) => response.json())
           .then(() => {

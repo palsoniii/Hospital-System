@@ -131,7 +131,7 @@
             </div>
         </div>
     </header>
-
+    <script src="config.js"></script>
     <script>
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('appointment-date').setAttribute('min', today);
@@ -161,11 +161,12 @@
                 appointment_time: time
             };
 
-            fetch('http://localhost:3000/appointments', {
+            fetch(`${API_CONFIG.baseUrl}${API_CONFIG.endpoints.appointments}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include',
                 body: JSON.stringify(appointmentData)
             })
             .then(response => response.json())
